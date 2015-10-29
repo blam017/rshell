@@ -18,7 +18,7 @@ void separator(string userinput)
     vector<string> commands;
 
     typedef boost::tokenizer<boost::char_separator<char> > Tok;
-        boost::char_separator<char> sep;
+        boost::char_separator<char> sep(" ", ";#", boost::drop_empty_tokens);
         Tok tok(userinput, sep);  //Container of tokens
 
 
@@ -26,21 +26,42 @@ void separator(string userinput)
     for (Tok::iterator tok_iter = tok.begin(); tok_iter != tok.end();
         ++tok_iter)
     {   
+        if (*tok_iter == "#")
+        {
+            break;
+        }
         if (*tok_iter == ";")
         {
             command_queue.push(commands);
             commands.clear();
             ++tok_iter;
-            if (tok_iter == tok.end())
-            {
-                break;
-            }
         }
         commands.push_back(*tok_iter);
     }
+    command_queue.push(commands);
+    /*
+    for (int i = 0; i < command_queue.front().size(); ++i)
+    {
+        cout << command_queue.back().at(i) << endl;
+    }
+
+    cout << endl;
 
     while(!command_queue.empty())
     {
+        for (int i = 0; i < command_queue.front().size(); ++i)
+        {
+            cout << command_queue.front().at(i) << endl;
+        }
+        command_queue.pop();
+    }
+*/
+    while(!command_queue.empty())
+    {
+        if(command_queue.front().at(0) == "exit")
+        {
+            exit(0);
+        }
         int count = command_queue.front().size();
         char *args[count + 1];
         for (int i = 0; i < count; ++i)
