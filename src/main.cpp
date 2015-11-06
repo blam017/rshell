@@ -15,7 +15,7 @@ int main()
         string userinput;
         getline(cin, userinput);
         
-        notExit = separator(userinput);
+        notExit = execution(userinput);
     }
     return 0;
 }
