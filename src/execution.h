@@ -20,14 +20,14 @@ void run_and (vector<string> &commands, bool &is_first, bool ran_first)
 {
     if (ran_first)
     {
-        int count = commands.size();
-        char *args[count + 1];
-        for (int i = 0; i < count; ++i)
+        int count = commands.size() + 1;
+        char **args = new char*[count];
+        for (int i = 0; i < count - 1; ++i)
         {
             const char *mystr = commands.at(i).c_str();
             args[i] = const_cast<char *> (&mystr[0]);
         }
-        args[count] = 0;
+        args[count - 1] = 0;
         
         int status;
         pid_t c_pid, pid; // Where c_pid is child
@@ -40,7 +40,6 @@ void run_and (vector<string> &commands, bool &is_first, bool ran_first)
         else if (c_pid == 0)
         {
             execvp(args[0], args);
-            int err = errno;
             perror("-bash");
             exit(errno);
         }
@@ -52,6 +51,7 @@ void run_and (vector<string> &commands, bool &is_first, bool ran_first)
                 perror("wait");
                 exit(1);
             }
+            delete [] args;
         }
     }
     is_first = false;
@@ -63,14 +63,14 @@ void run_or (vector<string> &commands, bool &is_first, bool ran_first)
 {
     if (!ran_first)
     {
-        int count = commands.size();
-        char *args[count + 1];
-        for (int i = 0; i < count; ++i)
+        int count = commands.size() + 1;
+        char **args = new char*[count];
+        for (int i = 0; i < count - 1; ++i)
         {
             const char *mystr = commands.at(i).c_str();
             args[i] = const_cast<char *> (&mystr[0]);
         }
-        args[count] = 0;
+        args[count - 1] = 0;
         
         int status;
         pid_t c_pid, pid; // Where c_pid is child
@@ -83,7 +83,6 @@ void run_or (vector<string> &commands, bool &is_first, bool ran_first)
         else if (c_pid == 0)
         {
             execvp(args[0], args);
-            int err = errno;
             perror("-bash");
             exit(errno);
         }
@@ -95,6 +94,7 @@ void run_or (vector<string> &commands, bool &is_first, bool ran_first)
                 perror("wait");
                 exit(1);
             }
+            delete [] args;
         }
     }
     is_first = false;
@@ -104,14 +104,14 @@ void run_or (vector<string> &commands, bool &is_first, bool ran_first)
 //  First command or no connectors.
 void run_first(vector <string> &commands, bool &is_first, bool &ran_first)
 {
-    int count = commands.size();
-    char *args[count + 1];
-    for (int i = 0; i < count; ++i)
+    int count = commands.size() + 1;
+    char **args = new char*[count];
+    for (int i = 0; i < count - 1; ++i)
     {
         const char *mystr = commands.at(i).c_str();
         args[i] = const_cast<char *> (&mystr[0]);
     }
-    args[count] = 0;
+    args[count - 1] = 0;
     
     int status;
     pid_t c_pid, pid; // Where c_pid is child
@@ -124,7 +124,6 @@ void run_first(vector <string> &commands, bool &is_first, bool &ran_first)
     else if (c_pid == 0) // Child process
     {
         execvp(args[0], args);
-        int err = errno;
         perror("-bash");
         exit(errno);
     }
@@ -140,6 +139,7 @@ void run_first(vector <string> &commands, bool &is_first, bool &ran_first)
         {
             ran_first = false; // True if execvp executes, else false.
         }
+        delete [] args;
     }
     is_first = false;
 }
@@ -154,8 +154,6 @@ bool execution (string userinput)
         boost::char_separator<char> sep(" ", ";#|&", boost::drop_empty_tokens);
         Tok tok(userinput, sep);  //Container of tokens
 
-
-    int count = 0; //Number of tokens
     for (Tok::iterator tok_iter = tok.begin(); tok_iter != tok.end();
         ++tok_iter)
     {   
@@ -247,7 +245,7 @@ bool execution (string userinput)
 
         vector<string> commands_to_run;
         queue< vector<string> > run_queue;
-        for (int i = 0; i < command_queue.front().size(); ++i)
+        for (unsigned i = 0; i < command_queue.front().size(); ++i)
         {
             if (command_queue.front().at(i) != "&&" && 
                command_queue.front().at(i) != "||")
