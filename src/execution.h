@@ -224,7 +224,7 @@ bool execution (string userinput)
             commands.push_back(*tok_iter); // Pushes input into vector
         }
     }
-    if(!commands.empty())
+    if (!commands.empty())
     {
         command_queue.push(commands);
     }
@@ -262,7 +262,10 @@ bool execution (string userinput)
                 commands_to_run.clear();
             }
         }
-        run_queue.push(commands_to_run);
+        if (!commands_to_run.empty())
+        {
+            run_queue.push(commands_to_run);
+        }
 
         if (run_queue.back().at(0) == "&&" || run_queue.back().at(0) == "||")
         {
