@@ -278,12 +278,20 @@ bool execution (string userinput)
             if (run_queue.front().at(0) == "&&")
             {
                 run_queue.pop();
+                if (run_queue.front().at(0) == "exit" && first_command_ran)
+                {
+                    return false;
+                }
                 run_and (run_queue.front(), is_first_command, first_command_ran);
                 run_queue.pop();
             }
             else if (run_queue.front().at(0) == "||")
             {
                 run_queue.pop();
+                if (run_queue.front().at(0) == "exit" && !first_command_ran)
+                {
+                    return false;
+                }
                 run_or (run_queue.front(), is_first_command, first_command_ran);
                 run_queue.pop();
             }
