@@ -18,7 +18,7 @@ Typing in the word "exit" exits the program and returns you back to terminal.
 
 1.  Possible memory leak when invalid commands are entered.
 2.  Shell terminates with an error if connectors are located at the end of an 
-input instead of resetting.
+input instead of resetting. (Fixed)
 3.  The comment symbol, "#" does not work properly when placed at the back of
 a word.  For instance, "echo hello#world" prints "hello" when it is supposed
 to print "hello#world".
