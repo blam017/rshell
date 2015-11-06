@@ -13,6 +13,9 @@
 
 using namespace std;
 
+//  This function runs based on the && connector.  It takes in a vector of 
+//commands to run along with 2 bools.  ran_first is the important one as it
+//detects whether or not the first command ran or not.
 void run_and (vector<string> &commands, bool &is_first, bool ran_first)
 {
     if (ran_first)
@@ -55,6 +58,7 @@ void run_and (vector<string> &commands, bool &is_first, bool ran_first)
     return;
 }
 
+//  Executes based on || connector.
 void run_or (vector<string> &commands, bool &is_first, bool ran_first)
 {
     if (!ran_first)
@@ -97,6 +101,7 @@ void run_or (vector<string> &commands, bool &is_first, bool ran_first)
     return;
 }
 
+//  First command or no connectors.
 void run_first(vector <string> &commands, bool &is_first, bool &ran_first)
 {
     int count = commands.size();
@@ -116,7 +121,7 @@ void run_first(vector <string> &commands, bool &is_first, bool &ran_first)
         perror("fork failed");
         exit(1);
     }
-    else if (c_pid == 0)
+    else if (c_pid == 0) // Child process
     {
         execvp(args[0], args);
         int err = errno;
@@ -133,7 +138,7 @@ void run_first(vector <string> &commands, bool &is_first, bool &ran_first)
         }
         if (WEXITSTATUS(status) != 0)
         {
-            ran_first = false;
+            ran_first = false; // True if execvp executes, else false.
         }
     }
     is_first = false;
@@ -141,9 +146,10 @@ void run_first(vector <string> &commands, bool &is_first, bool &ran_first)
 
 bool execution (string userinput)
 {
-    queue< vector<string> > command_queue;    
-    vector<string> commands;
+    queue< vector<string> > command_queue; // Queue of commands
+    vector<string> commands; // Holds single commands to run.
 
+    // Tokenizer which searches for connectors
     typedef boost::tokenizer<boost::char_separator<char> > Tok;
         boost::char_separator<char> sep(" ", ";#|&", boost::drop_empty_tokens);
         Tok tok(userinput, sep);  //Container of tokens
@@ -155,10 +161,11 @@ bool execution (string userinput)
     {   
         if (*tok_iter == "#")
         {
-            break;
+            break; // If # ignore rest.
         }
-        else if (*tok_iter == ";")
+        else if (*tok_iter == ";") // Check for ";" connector.
         {
+
             Tok::iterator check = tok_iter;
             ++check;
             if (*check == "&" || *check == "|")
@@ -170,7 +177,7 @@ bool execution (string userinput)
             command_queue.push(commands);
             commands.clear();
         }
-        else if (*tok_iter == "&")
+        else if (*tok_iter == "&") // Check for "&&" connector.
         {
             ++tok_iter;
             if (tok_iter == tok.end() || *tok_iter != "&")
@@ -178,11 +185,6 @@ bool execution (string userinput)
                 cout << "-bash: Syntax error: Unexpected token near &\n";
                 return true;
             }
-            /*
-            if(tok_iter == tok.end())
-            {
-                cout << "-bash: Syntax error:";
-            }*/
 
             Tok::iterator check = tok_iter;
             ++check;
@@ -198,7 +200,7 @@ bool execution (string userinput)
             }
             commands.push_back("&&");
         }
-        else if (*tok_iter == "|")
+        else if (*tok_iter == "|") // Checks for "||" connector.
         {
             ++tok_iter;
             if (*tok_iter != "|")
@@ -223,28 +225,12 @@ bool execution (string userinput)
         }
         else
         {
-            commands.push_back(*tok_iter);
+            commands.push_back(*tok_iter); // Pushes input into vector
         }
     }
-    command_queue.push(commands);
-    /*
-    for (int i = 0; i < command_queue.front().size(); ++i)
-    {
-        cout << command_queue.back().at(i) << endl;
-    }
+    command_queue.push(commands); // Pushes vectors into queues.
 
-    cout << endl;
-
-    while(!command_queue.empty())
-    {
-        for (int i = 0; i < command_queue.front().size(); ++i)
-        {
-            cout << command_queue.front().at(i) << endl;
-        }
-        command_queue.pop();
-    }
-*/
-    while (!command_queue.empty())
+    while (!command_queue.empty()) // Execution loop after parsing commands.
     {
         bool first_command_ran = true;
         bool is_first_command = true;
@@ -278,22 +264,12 @@ bool execution (string userinput)
             }
         }
         run_queue.push(commands_to_run);
-        /*
-        while (!run_queue.empty())
-        {
-            for(int i = 0; i < run_queue.front().size(); ++i)
-            {
-                cout << run_queue.front().at(i);
-            }
-            run_queue.pop();
-        }*/
 
         if (run_queue.back().at(0) == "&&" || run_queue.back().at(0) == "||")
         {
             cout << "-bash: Syntax error: Connector at end of argument.";
             return true;
         }
-
 
         while (!run_queue.empty())
         {
@@ -315,53 +291,7 @@ bool execution (string userinput)
                 run_queue.pop();
             }
         }
-        /*
-        int count = command_queue.front().size();
-        char *args[count + 1];
-        for (int i = 0; i < count; ++i)
-        {
-            const char *mystr = command_queue.front().at(i).c_str();
-            args[i] = const_cast<char *> (&mystr[0]);
-        }
-        args[count] = 0;
-    
-        int status;
-        pid_t c_pid, pid; // Where c_pid is child
-        c_pid = fork();
-        if (c_pid < 0)
-        {
-            perror("fork failed");
-            exit(1);
-        }
-        else if (c_pid == 0)
-        {
-            cout << args[0] << endl;
-            execvp(args[0], args);
-            int err = errno;
-            perror("-bash");
-            exit(errno);
-        }
-        else if (c_pid > 0)
-        {
-            if ( (pid = wait(&status)) < 0)
-            {
-                perror("wait");
-                exit(1);
-            }
-            if(WIFEXITED(status))
-            {
-                if(WEXITSTATUS(status) == 0)
-                {
-                cout << "SUCCESS" << endl;
-                }
-                else
-                    cout << "failure" << endl;
-            }
-            else if (!WIFEXITED(status))
-            {
-                cout << "FAILED" << endl;
-            }
-        }*/
+        
         command_queue.front().clear();
         command_queue.pop();
     }
