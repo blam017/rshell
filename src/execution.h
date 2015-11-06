@@ -224,7 +224,10 @@ bool execution (string userinput)
             commands.push_back(*tok_iter); // Pushes input into vector
         }
     }
-    command_queue.push(commands); // Pushes vectors into queues.
+    if(!commands.empty())
+    {
+        command_queue.push(commands);
+    }
 
     while (!command_queue.empty()) // Execution loop after parsing commands.
     {
