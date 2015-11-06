@@ -46,8 +46,7 @@ void run_and (vector<string> &commands, bool &is_first, bool ran_first)
         else if (c_pid > 0)
         {
             if ( (pid = wait(&status)) < 0)
-            {
-                cout << "check" << endl;
+            {;
                 perror("wait");
                 exit(1);
             }
@@ -90,7 +89,6 @@ void run_or (vector<string> &commands, bool &is_first, bool ran_first)
         {
             if ( (pid = wait(&status)) < 0)
             {
-                cout << "check" << endl;
                 perror("wait");
                 exit(1);
             }
@@ -131,7 +129,6 @@ void run_first(vector <string> &commands, bool &is_first, bool &ran_first)
     {
         if ( (pid = wait(&status)) < 0)
         {
-            cout << "check" << endl;
             perror("wait");
             exit(1);
         }
@@ -168,7 +165,7 @@ bool execution (string userinput)
             ++check;
             if (*check == "&" || *check == "|")
             {
-                cout << "-bash: Syntax error: No command before connector.";
+                cout << "-bash: Syntax error: No command before connector.\n";
                 return true;
             }
 
@@ -186,14 +183,15 @@ bool execution (string userinput)
 
             Tok::iterator check = tok_iter;
             ++check;
-            if (*check == "|" || *check == "&" || *check == ";")
+            if (check == tok.end())
             {
-                cout << "-bash: Syntax error: Unexpected token near &\n";
+                cout << "Error: No command after connector.\n";
                 return true;
             }
-            else if (check == tok.end())
+
+            else if (*check == "|" || *check == "&" || *check == ";")
             {
-                cout << "Error: No command after connector.";
+                cout << "-bash: Syntax error: Unexpected token near &\n";
                 return true;
             }
             commands.push_back("&&");
@@ -209,14 +207,14 @@ bool execution (string userinput)
 
             Tok::iterator check = tok_iter;
             ++check;
-            if (*check == "|" || *check == "&" || *check == ";")
-            {
-                cout << "-bash: Syntax error: Unexpected token near |\n";
-                return true;
-            }
-            else if (check == tok.end())
+            if (check == tok.end())
             {
                 cout << "Error: No command after connector.";
+                return true;
+            }
+            else if (*check == "|" || *check == "&" || *check == ";")
+            {
+                cout << "-bash: Syntax error: Unexpected token near |\n";
                 return true;
             }
             commands.push_back("||");
@@ -239,7 +237,7 @@ bool execution (string userinput)
         if (command_queue.front().at(0) == "&&" || 
             command_queue.front().at(0) == "||")
         {
-            cout << "-bash: Syntax error: Connector at front of argument";
+            cout << "-bash: Syntax error: Connector at front of argument.\n";
             return true;
         }
 
@@ -265,7 +263,7 @@ bool execution (string userinput)
 
         if (run_queue.back().at(0) == "&&" || run_queue.back().at(0) == "||")
         {
-            cout << "-bash: Syntax error: Connector at end of argument.";
+            cout << "-bash: Syntax error: Connector at end of argument.\n";
             return true;
         }
 
