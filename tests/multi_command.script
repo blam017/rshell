@@ -1,0 +1,43 @@
+Script started on Fri 06 Nov 2015 04:46:49 PM PST
+[blam017@hammer tests]$ ../bin/rshell
+blam017@hammer.cs.ucr.edu$ echo hello || ls
+hello
+blam017@hammer.cs.ucr.edu$ echo hello && ls
+hello
+multi_command  single_command.script
+blam017@hammer.cs.ucr.edu$ echo &
+-bash: Syntax error: Unexpected token near &
+blam017@hammer.cs.ucr.edu$ echo |
+-bash: Syntax error: Unexpected token near |
+blam017@hammer.cs.ucr.edu$ echo hello || echo world ; echo duck
+hello
+duck
+blam017@hammer.cs.ucr.edu$ echo hello | echodworld ; ls
+-bash: Syntax error: Unexpected token near |
+blam017@hammer.cs.ucr.edu$ ls &&
+Error: No command after connector.
+blam017@hammer.cs.ucr.edu$ ls ||
+Error: No command after connector.
+blam017@hammer.cs.ucr.edu$ ls -a &&; echo hello world
+-bash: Syntax error: Unexpected token near &
+blam017@hammer.cs.ucr.edu$ ls -a && ; echo hello world
+-bash: Syntax error: Unexpected token near &
+blam017@hammer.cs.ucr.edu$ ls -a && echo hello world
+.  ..  multi_command  single_command.script
+hello world
+blam017@hammer.cs.ucr.edu$ echo hello world &&& echo world
+-bash: Syntax error: Unexpected token near &
+blam017@hammer.cs.ucr.edu$ echo hello world || ls; ls -a && echos hello || echos out
+hello world
+.  ..  multi_command  single_command.script
+-bash: No such file or directory
+blam017@hammer.cs.ucr.edu$ lsh-ah||lecho hello && echo world
+.  ..  multi_command  single_command.script
+world
+blam017@hammer.cs.ucr.edu$ ls -a; echo world || echo out &&
+Error: No command after connector.
+blam017@hammer.cs.ucr.edu$ exit
+[blam017@hammer tests]$ exit
+exit
+
+Script done on Fri 06 Nov 2015 04:53:53 PM PST

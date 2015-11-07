@@ -1,0 +1,28 @@
+Script started on Fri 06 Nov 2015 04:22:22 PM PST
+[blam017@hammer tests]$ ../bin/rshell
+blam017@hammer.cs.ucr.edu$ echo hello
+hello
+blam017@hammer.cs.ucr.edu$ ls -a
+.  ..  single_command
+blam017@hammer.cs.ucr.edu$ ls-a
+-bash: No such file or directory
+blam017@hammer.cs.ucr.edu$ echos Hello
+-bash: No such file or directory
+blam017@hammer.cs.ucr.edu$ echo "Hello world"
+"Hello world"
+blam017@hammer.cs.ucr.edu$ echooecho hello ls
+echo hello ls
+blam017@hammer.cs.ucr.edu$ echo hello &&
+Error: No command after connector.
+blam017@hammer.cs.ucr.edu$ cd ..
+-bash: No such file or directory
+blam017@hammer.cs.ucr.edu$ ls -l
+total 0
+-rw-r--r-- 1 blam017 csmajs 0 Nov  6 16:22 single_command
+blam017@hammer.cs.ucr.edu$ l s
+-bash: No such file or directory
+blam017@hammer.cs.ucr.edu$ exit
+[blam017@hammer tests]$ exit
+exit
+
+Script done on Fri 06 Nov 2015 04:27:03 PM PST

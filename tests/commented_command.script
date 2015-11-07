@@ -1,0 +1,31 @@
+Script started on Fri 06 Nov 2015 04:54:52 PM PST
+[blam017@hammer tests]$ ../bin/rshell
+blam017@hammer.cs.ucr.edu$ echo testing command #with comments
+testing command
+blam017@hammer.cs.ucr.edu$ echo testing command #with comments; echo out
+testing command
+blam017@hammer.cs.ucr.edu$ ls #-1
+commented_command  multi_command.script	 single_command.script
+blam017@hammer.cs.ucr.edu$ echo hello #|||||||||||&&&&&&&&&
+hello
+blam017@hammer.cs.ucr.edu$ echo hello; #
+hello
+blam017@hammer.cs.ucr.edu$ echo hello || #ducks
+-bash: Syntax error: Connector at end of argument.
+blam017@hammer.cs.ucr.edu$ #exit
+blam017@hammer.cs.ucr.edu$ echo hello#world
+hello
+blam017@hammer.cs.ucr.edu$ ls -a && ls || echo #hello[&&^ls#-a
+.  ..  commented_command  multi_command.script	single_command.script
+commented_command  multi_command.script	 single_command.script
+blam017@hammer.cs.ucr.edu$ ls -a && ls || echo hello && l#s -a
+.  ..  commented_command  multi_command.script	single_command.script
+commented_command  multi_command.script	 single_command.script
+-bash: No such file or directory
+blam017@hammer.cs.ucr.edu$ ls -aa&& #echo hello
+-bash: Syntax error: Connector at end of argument.
+blam017@hammer.cs.ucr.edu$ exit
+[blam017@hammer tests]$ exit
+exit
+
+Script done on Fri 06 Nov 2015 04:59:04 PM PST
