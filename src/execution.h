@@ -199,7 +199,7 @@ bool execution (string userinput)
         else if (*tok_iter == "|") // Checks for "||" connector.
         {
             ++tok_iter;
-            if (*tok_iter != "|")
+            if (tok_iter == tok.end() || *tok_iter != "|")
             {
                 cout << "-bash: Syntax error: Unexpected token near |\n";
                 return true;
@@ -209,7 +209,7 @@ bool execution (string userinput)
             ++check;
             if (check == tok.end())
             {
-                cout << "Error: No command after connector.";
+                cout << "Error: No command after connector.\n";
                 return true;
             }
             else if (*check == "|" || *check == "&" || *check == ";")
