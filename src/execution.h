@@ -162,17 +162,11 @@ void run_and (vector<string> &commands, bool &is_first, bool ran_first, bool &ex
         if (commands.at(0) == "-e" || commands.at(0) == "-d" ||
             commands.at(0) == "-f")
         {
-            if (stat(commands.at(1).c_str(), &sb) == -1)
-            {
-                perror("stat");
-            }
+            stat(commands.at(1).c_str(), &sb);
         }
         else
         {
-            if (stat(commands.at(0).c_str(), &sb) == -1)
-            {
-                perror("stat");
-            }
+            stat(commands.at(0).c_str(), &sb);
         }
         if (commands.at(0) == "-e")
         {
@@ -254,19 +248,13 @@ void run_or (vector<string> &commands, bool &is_first, bool ran_first, bool &ex)
         if (commands.at(0) == "-e" || commands.at(0) == "-d" ||
             commands.at(0) == "-f")
         {
-            if (stat(commands.at(1).c_str(), &sb) == -1)
-            {
-                perror("stat");
-            }
+            stat(commands.at(1).c_str(), &sb);
         }
         else
         {
-            if (stat(commands.at(0).c_str(), &sb) == -1)
-            {
-                perror("stat");
-            }
+            stat(commands.at(0).c_str(), &sb);
         }
-         if (commands.at(0) == "-e")
+        if (commands.at(0) == "-e")
         {
             if(S_ISREG(sb.st_mode) || S_ISDIR(sb.st_mode))
             {
@@ -344,17 +332,11 @@ void run_first(vector <string> &commands, bool &is_first, bool &ran_first, bool 
         if (commands.at(0) == "-e" || commands.at(0) == "-d" ||
             commands.at(0) == "-f")
         {
-            if (stat(commands.at(1).c_str(), &sb) == -1)
-            {
-                perror("stat");
-            }
+            stat(commands.at(1).c_str(), &sb);
         }
         else
         {
-            if (stat(commands.at(0).c_str(), &sb) == -1)
-            {
-                perror("stat");
-            }
+            stat(commands.at(0).c_str(), &sb);
         }
 
         if (commands.at(0) == "-e")
