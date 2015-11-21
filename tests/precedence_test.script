@@ -1,0 +1,46 @@
+Script started on Fri 20 Nov 2015 06:11:03 PM PST
+[blam017@hammer tests]$ cd ..
+[blam017@hammer rshell]$ bin/rshell
+blam017@hammer.cs.ucr.edu$ (echo hello world && echo out) || ls -a && echolshould not ls
+hello world
+out
+should not ls
+blam017@hammer.cs.ucr.edu$ ((echoshhellowworld|||eechooout);Dls[-a) && echooshould ls
+-bash: No such file or directory
+out
+.  ..  bin  .git  LICENSE  Makefile  README.md	src  tests
+should ls
+blam017@hammer.cs.ucr.edu$ ((((((((((echo hello world))))))))))
+hello world
+blam017@hammer.cs.ucr.edu$ (echo A && echo B) || (echo C && echo D)
+A
+B
+blam017@hammer.cs.ucr.edu$ (echo A || echo B) || (echo C && echo D) && (ls--a; echo E)
+A
+.  ..  bin  .git  LICENSE  Makefile  README.md	src  tests
+E
+blam017@hammer.cs.ucr.edu$ (((echo hello) && ls) && echo out) && ls
+hello
+bin  LICENSE  Makefile	README.md  src	tests
+out
+bin  LICENSE  Makefile	README.md  src	tests
+blam017@hammer.cs.ucr.edu$ (((test -e src/main.cpp) && echo this exists) || echo this doesn't) && echo ducks
+this exists
+ducks
+blam017@hammer.cs.ucr.edu$ ((echo A && echo B) && (echo C && echo D))
+A
+B
+C
+D
+blam017@hammer.cs.ucr.edu$ (((echos oute||oecho out;lls-a)k&&eechoeshould work) && echo should exit && exit
+-bash: Syntax error: Number of operators do not match
+blam017@hammer.cs.ucr.edu$ (((echos out || echo out; ls -a) && echo should work)(&& echo should exit) && exit
+-bash: No such file or directory
+out
+.  ..  bin  .git  LICENSE  Makefile  README.md	src  tests
+should work
+should exit
+[blam017@hammer rshell]$ exit
+exit
+
+Script done on Fri 20 Nov 2015 06:23:54 PM PST

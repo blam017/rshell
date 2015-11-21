@@ -345,14 +345,17 @@ void run_first(vector <string> &commands, bool &is_first, bool &ran_first, bool 
             {
                 ran_first = true;
             }
+            if (commands.at(1) == " ") ran_first = true;
         }
         else if (commands.at(0) == "-d")
         {
             ran_first = S_ISDIR(sb.st_mode);
+            if (commands.at(1) == " ") ran_first = true;
         }
         else if (commands.at(0) == "-f")
         {
             ran_first = S_ISREG(sb.st_mode);
+            if (commands.at(1) == " ") ran_first = true;
         }
         else
         {
@@ -521,13 +524,36 @@ bool execution (string userinput)
                 ++check;
                 if (*check == "&" || *check == "|" || *check == ";" || 
                         *check == "(" || *check == ")" || *check == "["
-                        || *check == "]")
+                        || *check == "]" || check == tok.end())
                 {
-                    cout << "-bash: unexpected tokens near test operator\n;
-                    return true;
+                    commands.push_back(*tok_iter);
+                    commands.push_back(" ");
+                }
+                else 
+                {
+                    commands.push_back(*tok_iter);
                 }
             }
-            commands.push_back(*tok_iter); // Pushes input into vector
+            else if (*tok_iter == "-e" || *tok_iter == "-d" || *tok_iter == "-f")
+            {
+                Tok::iterator check = tok_iter;
+                ++check;
+                if (*check == "&" || *check == "|" || *check == ";" || 
+                        *check == "(" || *check == ")" || *check == "["
+                        || *check == "]" || check == tok.end())
+                {
+                    commands.push_back(*tok_iter);
+                    commands.push_back(" ");
+                }
+                else
+                {
+                    commands.push_back(*tok_iter);
+                }
+            }
+            else 
+            {
+                commands.push_back(*tok_iter); // Pushes input into vector
+            }
         }
     }
     if (!commands.empty())

@@ -1,0 +1,34 @@
+Script started on Fri 20 Nov 2015 05:40:06 PM PST
+[blam017@hammer tests]$ cds..
+[blam017@hammer rshell]$ bin/rshell
+blam017@hammer.cs.ucr.edu$ test src && echo exists
+exists
+blam017@hammer.cs.ucr.edu$ test -e src && echo exists
+exists
+blam017@hammer.cs.ucr.edu$ test -d src && echo exists
+exists
+blam017@hammer.cs.ucr.edu$ test -f src || echo Does not exist
+Does not exist
+blam017@hammer.cs.ucr.edu$ [src] && echo exists
+exists
+blam017@hammer.cs.ucr.edu$ [src] -e && echo exists
+exists
+blam017@hammer.cs.ucr.edu$ test yabadabadoo || echo does not exist
+does not exist
+blam017@hammer.cs.ucr.edu$ test || echo No idea what this is supposed to do
+No idea what this is supposed to do
+blam017@hammer.cs.ucr.edu$ test -e && echo But somehow this is supposed to work
+But somehow this is supposed to work
+blam017@hammer.cs.ucr.edu$ (test -e src.main.cpp && echo exists; echos hello) ||eecho this statement prints
+-bash: No such file or directory
+this statement prints
+blam017@hammer.cs.ucr.edu$ (test -e src/main.cpp && echo exists; echos hello) && lsh-a
+exists
+-bash: No such file or directory
+blam017@hammer.cs.ucr.edu$ ((test -e src/main.cpp && echo exists) && echo If exists, exit) && exit
+exists
+If exists, exit
+[blam017@hammer rshell]$ exit
+exit
+
+Script done on Fri 20 Nov 2015 05:47:44 PM PST
