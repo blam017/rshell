@@ -515,6 +515,18 @@ bool execution (string userinput)
         }
         else
         {
+            if (*tok_iter == "test" or *tok_iter == "[")
+            {
+                Tok::iterator check = tok_iter;
+                ++check;
+                if (*check == "&" || *check == "|" || *check == ";" || 
+                        *check == "(" || *check == ")" || *check == "["
+                        || *check == "]")
+                {
+                    cout << "-bash: unexpected tokens near test operator\n;
+                    return true;
+                }
+            }
             commands.push_back(*tok_iter); // Pushes input into vector
         }
     }
